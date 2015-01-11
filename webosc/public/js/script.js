@@ -3,14 +3,19 @@ var socket = io();
 
 jQuery(document).ready(function ($) {
 
-    oscSlider("browser", 440, 4400);
+    oscSlider("out", 0, 1000);
+
+    oscSlider("pos", 0, 1000);
+
+    oscSlider("level", 0, 1000);
+    
 
     socket.on('users', function (msg) {
         console.log("Clients: " + msg)
     });
 
     socket.on('osc', function (msg) {
-        console.log(msg)  
+        console.log(msg)
     });
 
 });
@@ -37,7 +42,7 @@ function oscSlider(oscPath, min, max) {
         onSlide: function(position, value) {
             var value = new Number(value);
             var msg = {
-                address: '/' + oscPath, 
+                address: '/' + oscPath,
                 args: [
                     value
                 ]
