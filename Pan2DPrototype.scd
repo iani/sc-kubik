@@ -37,14 +37,20 @@ Server.default.scope;
 //:
 
 (
-~vertical1 = { | out = 0 pos = 0 level = 1 width = 0 orientation = 0 rate = 1 |
-	var source, pan;
-	source = WhiteNoise.ar(0.1) * Decay2.kr(Impulse.kr(rate));
-	pan = PanAz.ar(10, source, pos * 0.8, level, width * 8 + 2, orientation);
+~vertical1 = { | out = 0 pos = 0 level = 1 width = 0 orientation = 0 rate = 1, freq = 400 |
+	var source, source2, pan;
+	// source = WhiteNoise.ar(0.1) * Decay2.kr(Impulse.kr(rate));
+	source2 = LFNoise2.ar(freq * LFNoise0.kr(5 + LFNoise0.kr(0.2, 10, 10), 20, 22), 0.1);
+	source2 = source2 * LFNoise1.ar(0.2 + LFNoise0.kr(0.1, 3)) ;
+	source = LFNoise2.ar(freq, 0.1) * LFPar.kr(5);
+
+	pan = PanAz.ar(10, source + source2, pos * 0.8, level, width * 8 + 2, orientation);
 	Out.ar(out, pan);
 }.play(args: [out: ~ringBusses.index]);
 )
 
+//:
+~vertical1.free;
 //:
 ~vertical1.set(\pos, 0.25);
 //:
@@ -76,7 +82,14 @@ Server.default.scope;
 }.play(args: [in: ~ringBusses.index], addAction: 'addToTail');
 )
 
+//:
 ~ring1.set(\pos, 1);
+
+
+//:
+
+~ring1.set(\width, 20);
+
 
 //:
 
@@ -148,7 +161,7 @@ OSCFunc.trace(false);
 		[key, func].postln;
 		OSCdef(key, { | msg |
 			[msg].postln;
-			~ring1.set(key, func.(msg[1]));
+			func.(msg[1]);
 		}, key)
 	}
 }
@@ -158,10 +171,22 @@ OSCFunc.trace(false);
 (
 ~createOSCreceivers.(
 	(
-		out: { | val | (val * 100).asInteger },
-		pos: { | val | val * 2 - 1 },
-		level: { | val | val * 3 },
-		orientation: { | val | val * 5 + 2.5 }
+		x: { | val |
+			~ring1.set(\pos, val);
+			~ring2.set(\pos, val);
+			~ring3.set(\pos, val);
+			~ring4.set(\pos, val);
+		},
+		y: { | val | ~vertical1.set(\pos, val) },
+		xwidth: { | val |
+			~ring1.set(\width, val * 18 + 2);
+			~ring2.set(\width, val * 18 + 2);
+			~ring3.set(\width, val * 12 + 2);
+			~ring4.set(\width, val * 10 + 2);
+		},
+		ywidth: { | val | ~vertical1.set(\width, val) },
+		level: { | val | ~vertical1.set(\level, val * 3) },
+		// orientation: { | val | val * 5 + 2.5 }
 	)
 )
 )

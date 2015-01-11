@@ -3,17 +3,15 @@ var socket = io();
 
 jQuery(document).ready(function ($) {
 
-    oscSlider("out");
+    oscSlider("x");
 
-    oscSlider("pos");
+    oscSlider("y");
+
+    oscSlider("xwidth");
+
+    oscSlider("ywidth");
 
     oscSlider("level");
-
-    oscSlider("orientation");
-
-    oscSlider("width");
-
-    oscSlider("rate");
 
     socket.on('users', function (msg) {
         console.log("Clients: " + msg);
