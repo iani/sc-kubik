@@ -9,7 +9,14 @@ html, body {
 	background-color: white;
 }
 
+input {
+	margin: 10px 0 0 30px;
+}
 
+label {
+	margin: 30px 0 20px 10px;
+	font-weight: bold;
+}
 
 
 /*.small {
