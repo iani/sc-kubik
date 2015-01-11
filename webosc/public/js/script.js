@@ -3,25 +3,39 @@ var socket = io();
 
 jQuery(document).ready(function ($) {
 
-    oscSlider("out", 0, 1000);
+    oscSlider("out");
 
-    oscSlider("pos", 0, 1000);
+    oscSlider("pos");
 
-    oscSlider("level", 0, 1000);
-    
+    oscSlider("level");
+
+    oscSlider("orientation");
+
+    oscSlider("width");
+
+    oscSlider("rate");
 
     socket.on('users', function (msg) {
-        console.log("Clients: " + msg)
+        console.log("Clients: " + msg);
     });
 
     socket.on('osc', function (msg) {
-        console.log(msg)
+        console.log(msg);
     });
 
 });
 
 
 function oscSlider(oscPath, min, max) {
+
+   min = min || 0;
+   max = max || 1;
+
+   var resolution = 1000;
+
+   var UImin = min * resolution;
+   var UImax = max * resolution;
+
 
     $('<label>')
         .attr('for',oscPath)
@@ -32,8 +46,8 @@ function oscSlider(oscPath, min, max) {
         .attr('class',oscPath)
         .attr('id',oscPath)
         .attr('type','range')
-        .attr('min',min)
-        .attr('max',max)
+        .attr('min',UImin)
+        .attr('max',UImax)
         .appendTo('.controllers');
 
 
@@ -44,14 +58,15 @@ function oscSlider(oscPath, min, max) {
             var msg = {
                 address: '/' + oscPath,
                 args: [
-                    value
+                    value / resolution
                 ]
             };
             socket.emit('osc', msg);
 
-            $('label[for=' + oscPath + ']').text(oscPath + ' ' + value);
+            $('label[for=' + oscPath + ']').text(oscPath + ' ' + value / resolution);
         }
     });
+
 
     //missing bidirectional control
 }
