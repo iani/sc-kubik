@@ -1,1 +1,9 @@
-Started at ZKM, Karlsruhe, on Sun, Jan 11 2015, 10:33 CET, after a brainstorming session with Gotz Dieper the day berfore, during the 5th workshop of [[http://eastn.eu][EASTN]].
+
+Communicating between SuperCollider and the browser via OSC.
+
+Uses library webosc ( https://github.com/iani/sc-kubik/tree/master/webosc) to connect browser to sclang via JavaScript.
+See especially osc-min (https://github.com/iani/sc-kubik/tree/master/webosc/node_modules/osc-min).
+
+The application was developed and tested during a hackathon at the EASTN summer session in Tsepelovo, August 2014.
+
+The repository was started at ZKM, Karlsruhe, on Sun, Jan 11 2015, 10:33 CET, after a brainstorming session with Gotz Dieper the day berfore, during the 5th workshop of [[http://eastn.eu][EASTN]].
